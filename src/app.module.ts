@@ -16,7 +16,7 @@ import { Avis, Restaurant } from './referentiels/restaurant/restaurant.entity';
       port: 5432,
       username: 'postgres',
       password: 'azerty',
-      database: 'doctolib_user',
+      database: 'uber_eats',
       entities: [User, Restaurant, Avis],
       synchronize: true,
     }),

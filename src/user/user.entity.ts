@@ -13,19 +13,10 @@ export class User {
   id: number;
 
   @Column()
-  phone_number: string;
-
-  @Column()
-  identity: string;
-
-  @Column()
   firstName: string;
 
   @Column()
   lastName: string;
-
-  @Column()
-  birthday: string;
 
   @Column({ unique: true })
   email: string;

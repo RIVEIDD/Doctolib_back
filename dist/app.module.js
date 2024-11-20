@@ -28,7 +28,7 @@ exports.AppModule = AppModule = __decorate([
                 port: 5432,
                 username: 'postgres',
                 password: 'azerty',
-                database: 'doctolib_user',
+                database: 'uber_eats',
                 entities: [user_entity_1.User, restaurant_entity_1.Restaurant, restaurant_entity_1.Avis],
                 synchronize: true,
             }),
