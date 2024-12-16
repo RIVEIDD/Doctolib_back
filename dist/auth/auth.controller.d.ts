@@ -10,4 +10,10 @@ export declare class AuthController {
             access_token: string;
         };
     }>;
+    log(body: any): Promise<{
+        user: UserDto;
+        token: {
+            access_token: string;
+        };
+    }>;
 }

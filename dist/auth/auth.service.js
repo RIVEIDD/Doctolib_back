@@ -13,7 +13,6 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcrypt");
-const restaurant_mapper_1 = require("../mappers/restaurant.mapper");
 const users_service_1 = require("../user/users.service");
 let AuthService = class AuthService {
     constructor(usersService, jwtService) {
@@ -27,18 +26,36 @@ let AuthService = class AuthService {
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                profilePicture: user.profilePicture,
-                favoriteRestaurants: [],
+                birthDate: user.birthDate
             };
-            if (user.favoriteRestaurants) {
-                userDto.favoriteRestaurants = user.favoriteRestaurants.map((restaurant) => restaurant_mapper_1.RestaurantMapper.mapRestaurantToDto(restaurant));
-            }
             return userDto;
         }
         return null;
     }
     async login(user) {
-        const payload = { email: user.email, sub: user.id };
+        const payload = {
+            email: user.email,
+            sub: user.id,
+        };
+        return {
+            access_token: this.jwtService.sign(payload),
+        };
+    }
+    async findUser(firstName) {
+        const user = await this.usersService.findOneByFirstName(firstName);
+        const userDto = {
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            birthDate: user.birthDate
+        };
+        return userDto;
+    }
+    async log(user) {
+        const payload = {
+            firstName: user.firstName,
+            sub: user.id,
+        };
         return {
             access_token: this.jwtService.sign(payload),
         };

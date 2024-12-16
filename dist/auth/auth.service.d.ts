@@ -9,4 +9,8 @@ export declare class AuthService {
     login(user: any): Promise<{
         access_token: string;
     }>;
+    findUser(firstName: string): Promise<UserDto | null>;
+    log(user: any): Promise<{
+        access_token: string;
+    }>;
 }

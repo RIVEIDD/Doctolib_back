@@ -1,5 +1,4 @@
 import { UserDto } from 'src/dto/user.dto';
-import { RestaurantMapper } from './restaurant.mapper';
 import { User } from 'src/user/user.entity';
 
 export class UserMapper {
@@ -8,17 +7,9 @@ export class UserMapper {
       firstName: user.firstName ?? '',
       lastName: user.lastName ?? '',
       email: user.email ?? '',
-      profilePicture: user.profilePicture ?? '',
-      favoriteRestaurants: [],
+      birthDate: user.birthDate ?? '',
     };
 
-    if (user.favoriteRestaurants) {
-      user.favoriteRestaurants.forEach((restaurant) => {
-        userDto.favoriteRestaurants.push(
-          RestaurantMapper.mapRestaurantToDto(restaurant),
-        );
-      });
-    }
     return userDto;
   }
 }

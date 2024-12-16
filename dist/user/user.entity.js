@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
-const restaurant_entity_1 = require("../referentiels/restaurant/restaurant.entity");
 const typeorm_1 = require("typeorm");
 let User = class User {
 };
@@ -22,28 +21,23 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "firstName", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], User.prototype, "lastName", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "profilePicture", void 0);
+], User.prototype, "firstName", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => restaurant_entity_1.Restaurant, (restaurant) => restaurant.users),
-    (0, typeorm_1.JoinTable)(),
-    __metadata("design:type", Array)
-], User.prototype, "favoriteRestaurants", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], User.prototype, "lastName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], User.prototype, "birthDate", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

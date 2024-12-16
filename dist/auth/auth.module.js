@@ -14,14 +14,13 @@ const users_service_1 = require("../user/users.service");
 const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("../user/user.entity");
-const restaurant_entity_1 = require("../referentiels/restaurant/restaurant.entity");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, restaurant_entity_1.Restaurant, restaurant_entity_1.Avis]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
             jwt_1.JwtModule.register({
                 secret: 'your_secret_key',
                 signOptions: { expiresIn: '60s' },

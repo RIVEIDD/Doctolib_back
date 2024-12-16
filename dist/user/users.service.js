@@ -14,16 +14,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const bcrypt = require("bcrypt");
-const user_entity_1 = require("./user.entity");
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("typeorm");
-const typeorm_2 = require("@nestjs/typeorm");
+const typeorm_1 = require("@nestjs/typeorm");
+const user_entity_1 = require("./user.entity");
+const typeorm_2 = require("typeorm");
 const jwt_1 = require("@nestjs/jwt");
-const restaurant_entity_1 = require("../referentiels/restaurant/restaurant.entity");
+const rxjs_1 = require("rxjs");
 let UsersService = class UsersService {
-    constructor(usersRepository, restaurantRepository, jwtService) {
+    constructor(usersRepository, jwtService) {
         this.usersRepository = usersRepository;
-        this.restaurantRepository = restaurantRepository;
         this.jwtService = jwtService;
     }
     async create(user) {
@@ -31,10 +30,10 @@ let UsersService = class UsersService {
             where: { email: user.email },
         });
         if (existingUser) {
-            throw new common_1.ConflictException('Un utilisateur avec cet email existe déjà');
+            throw new common_1.ConflictException('User already exists');
         }
         const hashedPassword = await bcrypt.hash(user.password, 10);
-        const newUser = this.usersRepository.create({
+        const newUser = await this.usersRepository.create({
             ...user,
             password: hashedPassword,
         });
@@ -46,35 +45,45 @@ let UsersService = class UsersService {
     async findOneByEmail(email) {
         return this.usersRepository.findOne({ where: { email } });
     }
-    async findById(id) {
-        return this.usersRepository.findOne({
-            where: { id },
-            relations: ['favoriteRestaurants', 'favoriteRestaurants.avis'],
-        });
+    async findOneByFirstName(firstName) {
+        return this.usersRepository.findOne({ where: { firstName } });
+    }
+    async findOneById(id) {
+        console.log('ID:', id);
+        return this.usersRepository.findOne({ where: { id } });
     }
     async findProfile(token) {
         const decoded = this.jwtService.decode(token);
-        const userId = decoded?.sub;
-        return this.findById(userId);
+        const userEmail = decoded?.email;
+        return this.findOneByEmail(userEmail);
+    }
+    findProfileByUserId(userId) {
+        return (0, rxjs_1.from)(this.findOneById(Number(userId))).pipe((0, rxjs_1.map)((user) => this._toUserDto(user)));
+    }
+    _toUserDto(user) {
+        return {
+            email: user.email,
+            lastName: user.lastName,
+            firstName: user.firstName,
+            birthDate: user.birthDate
+        };
     }
     async updateProfile(token, updateUserDto) {
         const user = await this.findProfile(token);
-        if (updateUserDto.favoriteRestaurants) {
-            const restaurantIds = updateUserDto.favoriteRestaurants.map((restaurant) => restaurant.id);
-            const existingRestaurants = await this.restaurantRepository.findByIds(restaurantIds);
-            user.favoriteRestaurants = existingRestaurants;
-        }
         Object.assign(user, updateUserDto);
-        return await this.usersRepository.save(user);
+        return this.usersRepository.save(user);
+    }
+    async findUserByFirstname(firstName) {
+        return this.usersRepository.findOne({
+            where: { firstName },
+        });
     }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, typeorm_2.InjectRepository)(user_entity_1.User)),
-    __param(1, (0, typeorm_2.InjectRepository)(restaurant_entity_1.Restaurant)),
-    __metadata("design:paramtypes", [typeorm_1.Repository,
-        typeorm_1.Repository,
+    __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
         jwt_1.JwtService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

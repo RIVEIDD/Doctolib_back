@@ -12,7 +12,7 @@ import { UserDto } from 'src/dto/user.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('login')
+  @Post('connexion')
   async login(@Body() body) {
     const { email, password } = body;
     const user: UserDto = await this.authService.validateUser(email, password);
@@ -25,4 +25,16 @@ export class AuthController {
 
     return { message: 'Login successful', user, token };
   }
+
+  @Post('user')
+  async log(@Body() body) {
+    const { email, password } = body;
+    const user: UserDto = await this.authService.validateUser(email, password);
+    const token = await this.authService.log(user);
+
+    return { user, token };
+  }
 }
+
+
+

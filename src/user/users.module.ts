@@ -1,23 +1,20 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 import { UsersController } from './users.controller';
 import { JwtModule } from '@nestjs/jwt';
-import {
-  Avis,
-  Restaurant,
-} from 'src/referentiels/restaurant/restaurant.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Restaurant, Avis]),
+    TypeOrmModule.forFeature([User]),
     JwtModule.register({
-      secret: 'your_secret_key', // Remplacez par votre clé secrète
-      signOptions: { expiresIn: '60s' }, // Optionnel : temps d'expiration du token
+      secret: 'secret_key',
+      signOptions: { expiresIn: '60s' },
     }),
   ],
-  providers: [UsersService],
   controllers: [UsersController],
+  providers: [UsersService],
 })
 export class UsersModule {}
