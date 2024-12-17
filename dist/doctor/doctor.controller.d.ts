@@ -5,8 +5,15 @@ export declare class DoctorController {
     constructor(doctorService: DoctorService);
     createDoctor(doctorData: Partial<Doctor>): Promise<Doctor>;
     getAllDoctors(): Promise<Doctor[]>;
+    searchDoctors(specialty: string, city: string): Promise<Doctor[]>;
     getDoctorById(id: number): Promise<Doctor>;
     updateDoctor(id: number, doctorData: Partial<Doctor>): Promise<Doctor>;
     deleteDoctor(id: number): Promise<void>;
-    searchDoctors(city: string): Promise<Doctor[]>;
+    findDoctors(city: string, specialty: string): {
+        id: number;
+        firstName: string;
+        lastName: string;
+        city: string;
+        specialty: string;
+    }[];
 }

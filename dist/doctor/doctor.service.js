@@ -38,13 +38,15 @@ let DoctorService = class DoctorService {
     async deleteDoctor(id) {
         await this.doctorRepository.delete(id);
     }
-    async searchDoctors(city, specialty) {
+    async searchDoctors(specialty, city) {
         const query = this.doctorRepository.createQueryBuilder('doctor');
-        if (city) {
-            query.andWhere('doctor.city = :city', { city });
-        }
+        console.log('Spécialité reçue :', specialty);
+        console.log('Ville reçue :', city);
         if (specialty) {
-            query.andWhere('doctor.specialty = :specialty', { specialty });
+            query.andWhere('doctor.specialty LIKE :specialty', { specialty: `%${specialty}%` });
+        }
+        if (city) {
+            query.andWhere('doctor.city LIKE :city', { city: `%${city}%` });
         }
         return query.getMany();
     }

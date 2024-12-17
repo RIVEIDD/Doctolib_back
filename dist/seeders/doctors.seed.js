@@ -4,6 +4,8 @@ exports.seedDoctors = void 0;
 const doctor_entity_1 = require("../doctor/doctor.entity");
 const seedDoctors = async (dataSource) => {
     const doctorRepository = dataSource.getRepository(doctor_entity_1.Doctor);
+    await dataSource.query('TRUNCATE TABLE "doctor" CASCADE');
+    console.log('All existing doctors and related data have been cleared.');
     const doctors = [
         {
             firstName: 'Chloé',

@@ -8,6 +8,6 @@ export declare class DoctorService {
     getDoctorById(id: number): Promise<Doctor>;
     updateDoctor(id: number, doctorData: Partial<Doctor>): Promise<Doctor>;
     deleteDoctor(id: number): Promise<void>;
-    searchDoctors(city?: string, specialty?: string): Promise<Doctor[]>;
+    searchDoctors(specialty: string, city: string): Promise<Doctor[]>;
     findDoctorsByLocation(location: string): Promise<Doctor[]>;
 }

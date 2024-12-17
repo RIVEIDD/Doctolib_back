@@ -25,6 +25,9 @@ let DoctorController = class DoctorController {
     getAllDoctors() {
         return this.doctorService.getAllDoctors();
     }
+    async searchDoctors(specialty, city) {
+        return this.doctorService.searchDoctors(specialty, city);
+    }
     getDoctorById(id) {
         return this.doctorService.getDoctorById(id);
     }
@@ -34,8 +37,20 @@ let DoctorController = class DoctorController {
     deleteDoctor(id) {
         return this.doctorService.deleteDoctor(id);
     }
-    async searchDoctors(city) {
-        return this.doctorService.findDoctorsByLocation(city);
+    findDoctors(city, specialty) {
+        const doctors = [
+            { id: 1, firstName: 'Chloé', lastName: 'Dupon', city: 'Nantes', specialty: 'Médecin généraliste' },
+            { id: 2, firstName: 'Paul', lastName: 'Martin', city: 'Paris', specialty: 'Dermatologue' },
+            { id: 3, firstName: 'Sophie', lastName: 'Durand', city: 'Nantes', specialty: 'Pédiatre' },
+        ];
+        let filteredDoctors = doctors;
+        if (city) {
+            filteredDoctors = filteredDoctors.filter(doctor => doctor.city.toLowerCase() === city.toLowerCase());
+        }
+        if (specialty) {
+            filteredDoctors = filteredDoctors.filter(doctor => doctor.specialty.toLowerCase() === specialty.toLowerCase());
+        }
+        return filteredDoctors;
     }
 };
 exports.DoctorController = DoctorController;
@@ -52,6 +67,14 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], DoctorController.prototype, "getAllDoctors", null);
+__decorate([
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('specialty')),
+    __param(1, (0, common_1.Query)('city')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], DoctorController.prototype, "searchDoctors", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
@@ -75,14 +98,15 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], DoctorController.prototype, "deleteDoctor", null);
 __decorate([
-    (0, common_1.Get)('search'),
-    __param(0, (0, common_1.Query)('location')),
+    (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('city')),
+    __param(1, (0, common_1.Query)('specialty')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], DoctorController.prototype, "searchDoctors", null);
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], DoctorController.prototype, "findDoctors", null);
 exports.DoctorController = DoctorController = __decorate([
-    (0, common_1.Controller)('doctors'),
+    (0, common_1.Controller)('api/doctors'),
     __metadata("design:paramtypes", [doctor_service_1.DoctorService])
 ], DoctorController);
 //# sourceMappingURL=doctor.controller.js.map
