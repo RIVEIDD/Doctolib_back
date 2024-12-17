@@ -4,6 +4,11 @@ import { Doctor } from '../doctor/doctor.entity';
 export const seedDoctors = async (dataSource: DataSource) => {
   const doctorRepository = dataSource.getRepository(Doctor);
 
+    // Effacer tous les enregistrements dans la table Doctor avant de remplir avec de nouvelles données
+  // Effacer tous les enregistrements dans la table Doctor et les tables référencées avec CASCADE
+  await dataSource.query('TRUNCATE TABLE "doctor" CASCADE');
+  console.log('All existing doctors and related data have been cleared.');
+
   const doctors = [
     {
       firstName: 'Chloé',

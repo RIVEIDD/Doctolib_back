@@ -32,14 +32,17 @@ export class DoctorService {
     await this.doctorRepository.delete(id);
   }
 
-  async searchDoctors(city?: string, specialty?: string): Promise<Doctor[]> {
+  async searchDoctors(specialty: string, city: string): Promise<Doctor[]> {
     const query = this.doctorRepository.createQueryBuilder('doctor');
+    console.log('Spécialité reçue :', specialty);
+    console.log('Ville reçue :', city);
+
+    if (specialty) {
+      query.andWhere('doctor.specialty LIKE :specialty', { specialty: `%${specialty}%` });
+    }
 
     if (city) {
-      query.andWhere('doctor.city = :city', { city });
-    }
-    if (specialty) {
-      query.andWhere('doctor.specialty = :specialty', { specialty });
+      query.andWhere('doctor.city LIKE :city', { city: `%${city}%` });
     }
 
     return query.getMany();
